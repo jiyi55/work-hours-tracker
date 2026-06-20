@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作时长统计</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 登录/注册页面 -->
+    <div id="auth-page" class="auth-container">
+        <div class="auth-box">
+            <h1 class="auth-title">工作时长统计</h1>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">登录</button>
+                <button class="tab-btn" data-tab="register">注册</button>
+            </div>
+            
+            <!-- 登录表单 -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="login-email" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="login-password" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="btn-primary">登录</button>
+                <p class="error-msg" id="login-error"></p>
+            </form>
+            
+            <!-- 注册表单 -->
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="register-email" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="register-password" placeholder="请输入密码（至少6位）" required>
+                </div>
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" id="register-confirm" placeholder="请再次输入密码" required>
+                </div>
+                <button type="submit" class="btn-primary">注册</button>
+                <p class="error-msg" id="register-error"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主页面 -->
+    <div id="main-page" class="main-container" style="display: none;">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <h1 class="page-title">工作时长统计</h1>
+            <div class="user-info">
+                <span class="user-icon">👤</span>
+                <span id="user-email"></span>
+                <button id="logout-btn" class="logout-btn">退出</button>
+            </div>
+        </header>
+
+        <!-- 关键时段提示 -->
+        <div class="alert-box">
+            <span class="alert-icon">⚠️</span>
+            <span>关键时段: 12:00-14:00 / 22:00-次日06:00</span>
+        </div>
+
+        <!-- 月份切换 -->
+        <div class="month-selector">
+            <button class="month-btn" id="prev-month">‹</button>
+            <span class="month-text" id="current-month">2026年6月</span>
+            <button class="month-btn" id="next-month">›</button>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-cards">
+            <div class="stat-card blue">
+                <div class="stat-value" id="total-hours">0.00h</div>
+                <div class="stat-label">月总工时</div>
+                <div class="stat-remain" id="total-remain">距100h还差100.00h</div>
+            </div>
+            <div class="stat-card yellow">
+                <div class="stat-value" id="key-hours">0.00h</div>
+                <div class="stat-label">关键时长</div>
+                <div class="stat-remain" id="key-remain">距50h还差50.00h</div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-value" id="trip-count">0</div>
+                <div class="stat-label">出勤趟数</div>
+            </div>
+        </div>
+
+        <!-- 小添乘选项 -->
+        <div class="extra-option">
+            <label class="checkbox-label">
+                <input type="checkbox" id="xiaotiancheng">
+                <span>小添乘 (+16小时)</span>
+            </label>
+        </div>
+
+        <!-- 添加出勤记录 -->
+        <div class="add-record-card">
+            <h3 class="card-title">添加出勤记录</h3>
+            <div class="add-form">
+                <div class="input-group">
+                    <label>出勤时间 (例: 0930)</label>
+                    <input type="text" id="start-time" placeholder="0930" maxlength="4">
+                </div>
+                <div class="input-group">
+                    <label>退勤时间 (例: 1800)</label>
+                    <input type="text" id="end-time" placeholder="1800" maxlength="4">
+                </div>
+                <button id="add-btn" class="btn-add">
+                    <span class="plus-icon">+</span>
+                    添加
+                </button>
+            </div>
+        </div>
+
+        <!-- 出勤记录列表 -->
+        <div class="records-card">
+            <h3 class="card-title">出勤记录 (<span id="record-count">0</span>趟)</h3>
+            <div class="records-table">
+                <div class="table-header">
+                    <div class="col-trip">趟数</div>
+                    <div class="col-start">出勤</div>
+                    <div class="col-end">退勤</div>
+                    <div class="col-total">总工时</div>
+                    <div class="col-key">关键时长</div>
+                    <div class="col-action"></div>
+                </div>
+                <div id="records-list" class="table-body">
+                    <div class="empty-state">加载中...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载遮罩 -->
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
